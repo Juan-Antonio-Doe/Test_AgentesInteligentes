@@ -9,14 +9,14 @@ public class AB_Wander : StateMachineBehaviour {
     private NavMeshAgent agent;
 
     // Mitad de la altura del agente
-    private float agentHalfHeight;
+    private float agentDoubledHeight;
 
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
         if (npc == null) {
             npc = animator.GetComponent<NPC_ASM>();
             agent = npc.agent;
-            agentHalfHeight = npc.agent.height / 2f;
+            agentDoubledHeight = npc.agent.height * 2f;
         }
 
         Wander();
@@ -51,7 +51,7 @@ public class AB_Wander : StateMachineBehaviour {
         /* Comprueba que la posición proporcionada esté dentro del NavMesh. Le pasamos la posición calculada al azar más la posición del agente
          * para que sea con respecto a donde se encuentra. El resto de valores puede dejarse siempre así.
          */
-        if (NavMesh.SamplePosition(npc.transform.position + (_randomDir * _distance), out NavMeshHit _hit, agentHalfHeight, NavMesh.AllAreas)) {
+        if (NavMesh.SamplePosition(npc.transform.position + (_randomDir * _distance), out NavMeshHit _hit, agentDoubledHeight, NavMesh.AllAreas)) {
             agent.SetDestination(_hit.position);
         }
         else {

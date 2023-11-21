@@ -9,15 +9,17 @@ public class AB_TakeCover : StateMachineBehaviour {
     private NavMeshAgent agent;
 
     // Mitad de la altura del agente
-    private float agentHalfHeight;
+    private float agentDoubledHeight;
 
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
         if (npc == null) {
             npc = animator.GetComponent<NPC_ASM>();
             agent = npc.agent;
-            agentHalfHeight = npc.agent.height / 2f;
+            agentDoubledHeight = npc.agent.height * 2f;
         }
+
+        agent.speed *= 2f;
 
         TakeCover();
     }
@@ -31,6 +33,7 @@ public class AB_TakeCover : StateMachineBehaviour {
     // OnStateExit is called when a transition ends and the state machine finishes evaluating this state
     override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
         agent.ResetPath();
+        agent.speed /= 2f;
     }
 
     void TakeCover() {
@@ -42,13 +45,16 @@ public class AB_TakeCover : StateMachineBehaviour {
             }
 
             Vector3 _coverPos = _covers[i].transform.position;
-            Vector3 _direction = npc.Player.transform.position - npc.transform.position;
-            _direction.y = 0;
 
             // Buscar primero que la posición este dentro del NavMesh
-            if (NavMesh.SamplePosition(_coverPos, out NavMeshHit _hit , agentHalfHeight, NavMesh.AllAreas)) {
+            if (NavMesh.SamplePosition(_coverPos, out NavMeshHit _hit , agentDoubledHeight, NavMesh.AllAreas)) {
                 // Bucar el borde del NavMesh lo más cercano posible a la posición del objeto de cobertura
                 if (NavMesh.FindClosestEdge(_hit.position, out NavMeshHit _edge, NavMesh.AllAreas)) {
+
+                    
+                    Vector3 _direction = npc.Player.transform.position - _edge.position;
+                    _direction.y = 0;
+
                     /*
                      * Calculamos el producto escalar entre la normal del borde con respecto a la dirección del jugador.
                      * Cuando ese valor es > 0, ambos vectores estan uno en frente del otro.
@@ -61,23 +67,21 @@ public class AB_TakeCover : StateMachineBehaviour {
                         break;
                     }
                     else { // Cuando el producto escalar > que el factor, hay que buscar otra cobertura
-                        /* Comprueba si al lado contrario de la cobertura se podría esconder
-                         * Calcula la dirección del punto de cobertura encontrado con respecto a la posición del jugador
-                         */
-                        _direction = _edge.position - npc.Player.transform.position;
 
-                        /*
-                         * Para buscar la posición contraria a la que hemos encontrado en la primera busqueda de cobertura,
-                         * desplazamos esa posición en la misma dirección en la que se encuentra ese punto respecto al jugador.
-                         */
-                        if (NavMesh.FindClosestEdge(_hit.position + (_direction.normalized * 2f), out _edge, NavMesh.AllAreas)) {
-                            // Hay que realizar la misma comprobación que con el primer punto encontrado
-                            _dot = Vector3.Dot(_edge.normal, _direction.normalized);
+                        if (NavMesh.SamplePosition(_coverPos - (_direction.normalized * 2f), out _hit, agentDoubledHeight, NavMesh.AllAreas)) {
+                            /*
+                            * Para buscar la posición contraria a la que hemos encontrado en la primera busqueda de cobertura,
+                            * desplazamos esa posición en la misma dirección en la que se encuentra ese punto respecto al jugador.
+                            */
+                            if (NavMesh.FindClosestEdge(_hit.position, out _edge, NavMesh.AllAreas)) {
+                                // Hay que realizar la misma comprobación que con el primer punto encontrado
+                                _dot = Vector3.Dot(_edge.normal, _direction.normalized);
 
-                            // Si el producto escalar es <= que el factor, es una cobertura válida
-                            if (_dot <= npc.CoverFactor) {
-                                agent.SetDestination(_edge.position);
-                                break;
+                                // Si el producto escalar es <= que el factor, es una cobertura válida
+                                if (_dot <= npc.CoverFactor) {
+                                    agent.SetDestination(_edge.position);
+                                    break;
+                                }
                             }
                         }
                     }
@@ -85,5 +89,10 @@ public class AB_TakeCover : StateMachineBehaviour {
                 }
             }
         }
+    }
+
+    IEnumerator BackToIdleCo(Animator _animator) {
+        yield return new WaitForSeconds(npc.TimeTakingCover);
+        _animator.SetBool("isTakingCover", false);
     }
 }

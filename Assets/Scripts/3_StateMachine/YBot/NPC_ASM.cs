@@ -34,6 +34,9 @@ public class NPC_ASM : MonoBehaviour {
     [SerializeField] private float coverFactor = -0.1f;
     public float CoverFactor { get { return coverFactor; } }
 
+    [SerializeField] private float timeTakingCover = 5f;
+    public float TimeTakingCover { get { return timeTakingCover; } }
+
 
     void Start() {
         agent = GetComponent<NavMeshAgent>();

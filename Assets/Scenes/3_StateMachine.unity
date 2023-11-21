@@ -663,7 +663,7 @@ MonoBehaviour:
   angleHelperR: {fileID: 2136339712}
   angleHelperL: {fileID: 1296959315}
   runAwayDistance: 7
-  takeCoverDistance: 20
+  takeCoverDistance: 15
   coverLayer:
     serializedVersion: 2
     m_Bits: 64
@@ -678,7 +678,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.3
-  m_Speed: 3.5
+  m_Speed: 4
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120

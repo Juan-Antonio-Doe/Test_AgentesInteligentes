@@ -10,16 +10,17 @@ public class AB_RunAway : StateMachineBehaviour {
     private NavMeshAgent agent;
 
     // Mitad de la altura del agente
-    private float agentHalfHeight;
+    private float agentDoubledHeight;
 
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
         if (npc == null) {
             npc = animator.GetComponent<NPC_ASM>();
             agent = npc.agent;
-            agentHalfHeight = npc.agent.height / 2f;
+            agentDoubledHeight = npc.agent.height * 2f;
         }
 
+        agent.speed *= 1.5f;
         RunAway();
     }
 
@@ -41,6 +42,7 @@ public class AB_RunAway : StateMachineBehaviour {
     // OnStateExit is called when a transition ends and the state machine finishes evaluating this state
     override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
         agent.ResetPath();
+        agent.speed /= 1.5f;
     }
 
     // Huye del jugador
@@ -53,7 +55,7 @@ public class AB_RunAway : StateMachineBehaviour {
         _dirToPlayer = Quaternion.Euler(0, _rotation, 0) * _dirToPlayer.normalized;   // Rota el vector _dirToPlayer
 
         if (NavMesh.SamplePosition(npc.transform.position + (_dirToPlayer * npc.RunAwayDistance), 
-            out NavMeshHit _hit, agentHalfHeight, NavMesh.AllAreas)) {
+            out NavMeshHit _hit, agentDoubledHeight, NavMesh.AllAreas)) {
             agent.SetDestination(_hit.position);
         }
         else {
