@@ -21,8 +21,8 @@ public class AB_Idle : StateMachineBehaviour {
         npc.DetectPlayer();
 
         if (npc.Player != null) {
-            //animator.SetBool("isRunning", true);
-            animator.SetBool("isTakingCover", true);
+            animator.SetBool("isRunning", true);
+            //animator.SetBool("isTakingCover", true);
         }
     }
 

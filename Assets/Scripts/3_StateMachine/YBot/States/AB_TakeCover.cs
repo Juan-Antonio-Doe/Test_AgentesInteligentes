@@ -11,6 +11,8 @@ public class AB_TakeCover : StateMachineBehaviour {
     // Mitad de la altura del agente
     private float agentDoubledHeight;
 
+    private bool isHidden; // Indica si el NPC está escondido
+
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
         if (npc == null) {
@@ -25,15 +27,27 @@ public class AB_TakeCover : StateMachineBehaviour {
     }
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
-    //override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
-    //{
-    //    
-    //}
+    override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
+        if ((agent.destination - npc.transform.position).sqrMagnitude <= (agent.stoppingDistance * agent.stoppingDistance) + 0.05f) {
+            if (!isHidden) {
+                isHidden = true;
+                npc.StartCoroutine(BackToIdleCo(animator));
+            }
+        }
+
+        npc.DetectPlayer();
+
+        if (npc.Player != null) {
+            animator.SetBool("isRunning", true);
+            animator.SetBool("isTakingCover", false);
+        }
+    }
 
     // OnStateExit is called when a transition ends and the state machine finishes evaluating this state
     override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
         agent.ResetPath();
         agent.speed /= 2f;
+        isHidden = false;
     }
 
     void TakeCover() {

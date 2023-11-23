@@ -123,6 +123,37 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &13127542
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 13127543}
+  m_Layer: 0
+  m_Name: SphereCastPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &13127543
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 13127542}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 1.25, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 594255875}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &86323808
 GameObject:
   m_ObjectHideFlags: 0
@@ -628,6 +659,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: ef6145cf5383eb2489b35cc950689106, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1296959315}
+    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: ef6145cf5383eb2489b35cc950689106, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 13127543}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: ef6145cf5383eb2489b35cc950689106, type: 3}
       insertIndex: 1
@@ -653,6 +687,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a1227ef344ccd2b43ab20cf19b260736, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <agent>k__BackingField: {fileID: 594255873}
   idleTime: 3
   player: {fileID: 0}
   detectRange: 5
@@ -663,11 +698,15 @@ MonoBehaviour:
   angleHelperR: {fileID: 2136339712}
   angleHelperL: {fileID: 1296959315}
   runAwayDistance: 7
+  checkFrontOrigin: {fileID: 13127543}
+  checkFrontRadius: 1
+  checkFrontDistance: 3.5
   takeCoverDistance: 15
   coverLayer:
     serializedVersion: 2
     m_Bits: 64
   coverFactor: -0.1
+  timeTakingCover: 5
 --- !u!195 &594255873
 NavMeshAgent:
   m_ObjectHideFlags: 0

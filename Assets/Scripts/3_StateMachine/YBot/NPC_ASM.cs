@@ -5,7 +5,8 @@ using UnityEngine.AI;
 
 public class NPC_ASM : MonoBehaviour {
 
-    [SerializeField] public NavMeshAgent agent { get; private set; }
+    [field: Header("General")]
+    [field: SerializeField] public NavMeshAgent agent { get; private set; }
 
     [SerializeField] private float idleTime = 3f;
     public float IdleTime { get { return idleTime; } }
@@ -21,10 +22,18 @@ public class NPC_ASM : MonoBehaviour {
     [SerializeField] private float VisionAngle = 90f;
     [SerializeField] private Transform angleHelperR, angleHelperL;
 
-
+    [Header("Run Away")]
     [SerializeField] private float runAwayDistance = 7f;
     public float RunAwayDistance { get { return runAwayDistance; } }
 
+    [SerializeField] private Transform checkFrontOrigin;
+    public Transform CheckFrontOrigin { get { return checkFrontOrigin; } }
+    [SerializeField] private float checkFrontRadius = 1f;
+    public float CheckFrontRadius { get { return checkFrontRadius; } }
+    [SerializeField] private float checkFrontDistance = 3.5f;
+    public float CheckFrontDistance { get { return checkFrontDistance; } }
+
+    [Header("Take Cover")]
     [SerializeField] private float takeCoverDistance = 15f;
     public float TakeCoverDistance { get { return takeCoverDistance; } }
 
@@ -39,7 +48,8 @@ public class NPC_ASM : MonoBehaviour {
 
 
     void Start() {
-        agent = GetComponent<NavMeshAgent>();
+        if (agent == null)
+            agent = GetComponent<NavMeshAgent>();
     }
 
     void Update() {
@@ -85,5 +95,10 @@ public class NPC_ASM : MonoBehaviour {
         angleHelperL.localEulerAngles = new Vector3(0, -auxAngle, 0);
         Gizmos.DrawRay(angleHelperR.position, angleHelperR.forward * detectRange);
         Gizmos.DrawRay(angleHelperL.position, angleHelperL.forward * detectRange);
+
+        // Dibujar el SphereCast que comprueba obstaculos frontales
+        Gizmos.color = Color.magenta;
+        Gizmos.DrawRay(checkFrontOrigin.position, checkFrontOrigin.forward * checkFrontDistance);
+        Gizmos.DrawWireSphere(checkFrontOrigin.position + (checkFrontOrigin.forward * checkFrontDistance), checkFrontRadius);
     }
 }
