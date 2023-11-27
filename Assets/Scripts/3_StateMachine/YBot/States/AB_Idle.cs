@@ -21,8 +21,9 @@ public class AB_Idle : StateMachineBehaviour {
         npc.DetectPlayer();
 
         if (npc.Player != null) {
-            animator.SetBool("isRunning", true);
+            //animator.SetBool("isRunning", true);
             //animator.SetBool("isTakingCover", true);
+            RunOrTakeCover(animator);
         }
     }
 
@@ -36,5 +37,22 @@ public class AB_Idle : StateMachineBehaviour {
         yield return new WaitForSeconds(npc.IdleTime);
         _anim.SetBool("isWandering", true);
 
+    }
+
+    void RunOrTakeCover(Animator _anim) {
+        // Si el NPC ya está huyendo o escondiéndose, no se ejecuta la corrutina
+        npc.StopAllCoroutines();
+
+        // Para calcular un porcentaje exacto, se calcula un número aleatorio entre 1 y 100
+        // Si el número es menor o igual al porcentaje, se ejecuta la acción
+        int _random = Random.Range(1, 101); /// Otra vez todos preguntando lo mismo sobre el 1 extra...
+
+        // En función del nº aleatorio, se esconde o huye
+        if (_random <= npc.ChanceToTakeCover) {
+            _anim.SetBool("isTakingCover", true);
+        }
+        else {
+            _anim.SetBool("isRunning", true);
+        }
     }
 }

@@ -7,6 +7,7 @@ public class NPC_ASM : MonoBehaviour {
 
     [field: Header("General")]
     [field: SerializeField] public NavMeshAgent agent { get; private set; }
+    [field: SerializeField] private Animator animator { get; set; }
 
     [SerializeField] private float idleTime = 3f;
     public float IdleTime { get { return idleTime; } }
@@ -46,14 +47,20 @@ public class NPC_ASM : MonoBehaviour {
     [SerializeField] private float timeTakingCover = 5f;
     public float TimeTakingCover { get { return timeTakingCover; } }
 
+    [SerializeField] private int chanceToTakeCover = 40;    // Probabilidad de esconderse en vez de huir
+    public int ChanceToTakeCover { get { return chanceToTakeCover; } }
+
 
     void Start() {
         if (agent == null)
             agent = GetComponent<NavMeshAgent>();
+        if (animator == null)
+            animator = GetComponent<Animator>();
     }
 
     void Update() {
-        
+        // Actualizar la velocidad del agente en el animator
+        animator.SetFloat("Velocity", agent.velocity.sqrMagnitude);
     }
 
     public void DetectPlayer() {

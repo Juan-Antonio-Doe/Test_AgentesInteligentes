@@ -688,6 +688,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <agent>k__BackingField: {fileID: 594255873}
+  <animator>k__BackingField: {fileID: 594255876}
   idleTime: 3
   player: {fileID: 0}
   detectRange: 5
@@ -707,6 +708,7 @@ MonoBehaviour:
     m_Bits: 64
   coverFactor: -0.1
   timeTakingCover: 5
+  chanceToTakeCover: 40
 --- !u!195 &594255873
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -732,6 +734,11 @@ NavMeshAgent:
 --- !u!4 &594255875 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: ef6145cf5383eb2489b35cc950689106, type: 3}
+  m_PrefabInstance: {fileID: 594255868}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &594255876 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 5866666021909216657, guid: ef6145cf5383eb2489b35cc950689106, type: 3}
   m_PrefabInstance: {fileID: 594255868}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &749563423

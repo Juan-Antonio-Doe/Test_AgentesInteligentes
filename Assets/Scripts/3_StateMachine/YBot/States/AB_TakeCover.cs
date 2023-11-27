@@ -37,9 +37,8 @@ public class AB_TakeCover : StateMachineBehaviour {
 
         npc.DetectPlayer();
 
-        if (npc.Player != null) {
+        if (npc.Player != null && isHidden) {
             animator.SetBool("isRunning", true);
-            animator.SetBool("isTakingCover", false);
         }
     }
 
@@ -48,6 +47,9 @@ public class AB_TakeCover : StateMachineBehaviour {
         agent.ResetPath();
         agent.speed /= 2f;
         isHidden = false;
+
+        // Quitar el bool de que esta buscando cobertura
+        animator.SetBool("isTakingCover", false);
     }
 
     void TakeCover() {
