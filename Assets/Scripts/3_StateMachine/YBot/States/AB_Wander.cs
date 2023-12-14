@@ -57,6 +57,5 @@ public class AB_Wander : StateMachineBehaviour {
         else {
             Wander();
         }
-
     }
 }
