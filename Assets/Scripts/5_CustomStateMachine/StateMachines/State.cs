@@ -17,7 +17,7 @@ public abstract class State {
     }*/
 
     public virtual void OnEnter() {
-
+        Debug.Log($"Current state: {this}");
     }
 
     public virtual void OnUpdate() {
@@ -25,6 +25,10 @@ public abstract class State {
     }
 
     public virtual void OnExit() {
+
+    }
+
+    public virtual void OnDrawGizmos() {
 
     }
 }

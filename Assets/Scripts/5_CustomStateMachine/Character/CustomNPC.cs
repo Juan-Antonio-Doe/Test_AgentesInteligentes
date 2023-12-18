@@ -12,7 +12,7 @@ public class CustomNPC : StateMachine {
         if (agent == null)
             agent = GetComponent<NavMeshAgent>();
 
-        currentState = new WanderState(this);
+        currentState = new IdleState(this) { timeInIdle = 3f };
         currentState.OnEnter();
     }
 

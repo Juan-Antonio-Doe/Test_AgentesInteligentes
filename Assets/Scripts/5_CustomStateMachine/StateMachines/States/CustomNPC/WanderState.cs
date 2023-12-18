@@ -19,6 +19,14 @@ public class WanderState : NPCState {
         Wander();
     }
 
+    public override void OnUpdate() {
+        base.OnUpdate();
+
+        if (agent.remainingDistance <= agent.stoppingDistance) {
+            npc.ChangeState(new IdleState(npc));
+        }
+    }
+
     void Wander() {
         int[] _distValues = new int[6] { -6, -5, -4, 4, 5, 6 };
 
@@ -35,5 +43,11 @@ public class WanderState : NPCState {
         else {
             Wander();
         }
+    }
+
+    public override void OnDrawGizmos() {
+        base.OnDrawGizmos();
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(npc.transform.position, 6);
     }
 }

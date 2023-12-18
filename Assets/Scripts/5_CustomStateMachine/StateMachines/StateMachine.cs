@@ -20,4 +20,8 @@ public abstract class StateMachine : MonoBehaviour {
     protected virtual void Update() {
         currentState?.OnUpdate();
     }
+
+    private void OnDrawGizmos() {
+        currentState?.OnDrawGizmos();
+    }
 }
