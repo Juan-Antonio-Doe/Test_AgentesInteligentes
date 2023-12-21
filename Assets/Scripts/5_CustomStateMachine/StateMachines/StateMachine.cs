@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 public abstract class StateMachine : MonoBehaviour {
@@ -23,5 +24,11 @@ public abstract class StateMachine : MonoBehaviour {
 
     private void OnDrawGizmos() {
         currentState?.OnDrawGizmos();
+
+#if UNITY_EDITOR
+        GUI.color = Color.blue;
+        Handles.Label(transform.position + Vector3.up * 2, $"{gameObject.name} | Current state: {currentState}");
+
+#endif
     }
 }
