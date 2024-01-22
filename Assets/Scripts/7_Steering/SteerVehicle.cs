@@ -17,19 +17,26 @@ public class SteerVehicle : MonoBehaviour {
     [field: SerializeField] private Rigidbody rb { get; set; }
     [field: SerializeField] private float speed { get; set; } = 0.1f;
     [field: SerializeField] private float rotationAmount { get; set; } = 1f;
+    [field: SerializeField, Tooltip("Nº por el que se dividirá la velocidad de rotación" +
+        " cuando tenga que girar mas despacio.")] private float rotationDivider { get; set; } = 2f;
+    [field: SerializeField] private float timeToResetRot { get; set; } = 0.5f;
+    [field: SerializeField] private float rotationSmoothing { get; set; } = 5f;
 
-    private Vector3 desiredDirection;   // Direction to move towards
-    private float steeredRot;           // Rotation needed to avoid obstacle
-
+    private Vector3 desiredDirection;       // Direction to move towards
+    private float steeredRot { get; set; }  // Rotation needed to avoid obstacle
+    private float rotAmountDivided { get; set; }
+    private float steerResetTimer { get; set; }
 
 	
     void Start() {
-        
+        rotAmountDivided = rotationAmount / rotationDivider;
+        steerResetTimer = timeToResetRot;
     }
 
     void Update() {
         CastSensors();
-        transform.eulerAngles = new Vector3(0f, steeredRot, 0f);
+        //transform.eulerAngles = new Vector3(0f, steeredRot, 0f);
+        transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0f, steeredRot, 0f), Time.deltaTime * rotationSmoothing);
     }
 
     void FixedUpdate() {
@@ -46,14 +53,44 @@ public class SteerVehicle : MonoBehaviour {
         // If the only available sensor is the right one with rotation -> rotate right
         if (!_rightRot && _right && _left && _leftRot) {
             steeredRot += rotationAmount * Time.deltaTime;
+            steerResetTimer = timeToResetRot;
             return;
         }
 
         // If the only available sensor is the left one with rotation -> rotate left
         if (!_leftRot && _left && _right && _rightRot) {
             steeredRot -= rotationAmount * Time.deltaTime;
+            steerResetTimer = timeToResetRot;
             return;
         }
+
+        // If the right sensor detects an obstacle -> rotate left
+        if (_rightRot) {
+            steeredRot -= rotationAmount * Time.deltaTime;
+            steerResetTimer = timeToResetRot;
+        }
+        // If the right sensor doesn't detect an obstacle and the right with rotation sensor does -> rotate left
+        else if (_rightRot) {
+            steeredRot -= rotAmountDivided * Time.deltaTime;
+            steerResetTimer = timeToResetRot;
+        }
+        // If the previous sensors don't detect an obstacle and the left sensor does -> rotate right
+        else if (_leftRot) {
+            steeredRot += rotationAmount * Time.deltaTime;
+            steerResetTimer = timeToResetRot;
+        }
+        // If the previous sensors don't detect an obstacle and the left with rotation sensor does -> rotate right
+        else if (_leftRot) {
+            steeredRot += rotAmountDivided * Time.deltaTime;
+            steerResetTimer = timeToResetRot;
+        }
+        else {
+            steerResetTimer -= Time.deltaTime;
+            if (steerResetTimer <= 0f) {
+                steeredRot = 0f;
+            }
+        }
+
     }
 
     void OnDrawGizmos() {
