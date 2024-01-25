@@ -591,10 +591,41 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: -0.25}
-  m_LocalScale: {x: 11, y: 11, z: 2}
+  m_LocalScale: {x: 10, y: 11, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1432960569}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1918747542
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1918747543}
+  m_Layer: 0
+  m_Name: Target
+  m_TagString: Untagged
+  m_Icon: {fileID: -5487077368411116049, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1918747543
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1918747542}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 31}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2054314569
 GameObject:
@@ -750,9 +781,12 @@ MonoBehaviour:
   <leftRotOrigin>k__BackingField: {fileID: 159728348}
   <sensorLength>k__BackingField: 7
   <rotSensorLengthOffset>k__BackingField: 0.06
+  <sidesSensorLength>k__BackingField: 2.5
   <obstacleLayer>k__BackingField:
     serializedVersion: 2
     m_Bits: 64
+  <target>k__BackingField: {fileID: 1918747543}
+  <stopDistance>k__BackingField: 0.05
   <rb>k__BackingField: {fileID: 2054314574}
   <speed>k__BackingField: 0.1
   <rotationAmount>k__BackingField: 80
@@ -859,3 +893,4 @@ SceneRoots:
   - {fileID: 1033217193}
   - {fileID: 1432960569}
   - {fileID: 2054314573}
+  - {fileID: 1918747543}
